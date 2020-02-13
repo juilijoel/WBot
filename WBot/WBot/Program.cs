@@ -69,7 +69,7 @@ namespace WBot
                     return;
                 }
 
-                await _botClient.SendTextMessageAsync(e.Message.Chat, $"W, postattu {count} kertaa", replyToMessageId: e.Message.MessageId);
+                await _botClient.SendTextMessageAsync(e.Message.Chat, $"W, postattu {count + 1} kertaa", replyToMessageId: e.Message.MessageId);
             }
             catch(Exception ex)
             {
@@ -80,9 +80,9 @@ namespace WBot
         private static string GetUrlFromMessage(Message message)
         {
             var splitted = message.Text.Split(" ");
-            foreach(var word in splitted)
+            foreach (var word in splitted)
             {
-                if(IsUrlValid(word))
+                if (IsUrlValid(word))
                 {
                     return word;
                 }

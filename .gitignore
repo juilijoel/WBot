@@ -37,3 +37,5 @@ msbuild.wrn
 .vs/
 /WBot/WBot/appsettings.json
 /WBot/WBot/appsettings_debug.json
+/WBot/WBot/Properties/PublishProfiles/wbot - Web Deploy.pubxml
+/WBot/WBot/Settings.job

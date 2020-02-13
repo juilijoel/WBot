@@ -1,10 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk;Microsoft.NET.Sdk.Publish">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
@@ -13,11 +11,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
     <PackageReference Include="Telegram.Bot" Version="15.1.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\WBot.DataAccess\WBot.DataAccess.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="appsettings_example.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -28,6 +24,8 @@
     <None Update="appsettings_debug.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Settings.job">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-
 </Project>
