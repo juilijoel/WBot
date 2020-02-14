@@ -23,11 +23,11 @@ namespace WBot.DataAccess.Services
                         LinkUrl = linkUrl,
                         ChatId = message.Chat.Id,
                         FirstPostMessageId = message.MessageId,
-                        PasteCount = 0
+                        PasteCount = 1
                     });
 
                     await ctx.SaveChangesAsync();
-                    return 0;
+                    return 1;
                 }
 
                 else

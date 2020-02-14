@@ -63,12 +63,12 @@ namespace WBot
                 var count = await _service.InsertLink(url, e.Message);
 
                 //URL is posted for the first time
-                if(count == 0)
+                if(count == 1)
                 {
                     return;
                 }
 
-                await _botClient.SendTextMessageAsync(e.Message.Chat, $"W, postattu {count + 1} kertaa", replyToMessageId: e.Message.MessageId);
+                await _botClient.SendTextMessageAsync(e.Message.Chat, $"W, postattu {count} kertaa", replyToMessageId: e.Message.MessageId);
             }
             catch(Exception ex)
             {

@@ -16,7 +16,7 @@ namespace WBot
 
         public static string FormatUrl(this string url)
         {
-            return url.ToLower().Replace("https://", "").Replace("http://", "").Replace("www.", "");
+            return url.Replace("https://", "").Replace("http://", "").Replace("www.", "");
         }
     }
 }
