@@ -84,7 +84,13 @@ namespace WBot
             {
                 if (word.IsUrlValid())
                 {
-                    return word.FormatUrl();
+                    var formatted = word.FormatUrl();
+
+                    //re-check
+                    if (formatted.IsUrlValid())
+                    {
+                        return formatted;
+                    }
                 }
             }
 
