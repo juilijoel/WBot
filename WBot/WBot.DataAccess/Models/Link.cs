@@ -11,6 +11,7 @@ namespace WBot.DataAccess.Models
         [Url]
         public long ChatId { get; set; }
         public long FirstPostMessageId { get; set; }
+        public DateTime FirstPostTimeStamp { get; set; }
         public string LinkUrl { get; set; }
         public int PasteCount { get; set; }
     }

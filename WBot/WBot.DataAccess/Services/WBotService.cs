@@ -23,6 +23,7 @@ namespace WBot.DataAccess.Services
                         LinkUrl = linkUrl,
                         ChatId = message.Chat.Id,
                         FirstPostMessageId = message.MessageId,
+                        FirstPostTimeStamp = message.Date,
                         PasteCount = 1
                     });
 
