@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -79,24 +78,17 @@ namespace WBot
 
         private static string GetUrlFromMessage(Message message)
         {
-            var splitted = message.Text.Split(" ");
+            //Split words
+            var splitted = message.Text.Split(new char[] {' ','\n'});
             foreach (var word in splitted)
             {
-                if (IsUrlValid(word))
+                if (word.IsUrlValid())
                 {
-                    return word;
+                    return word.FormatUrl();
                 }
             }
 
             return null;
-        }
-
-        private static bool IsUrlValid(string url)
-        {
-
-            string pattern = @"^(http|https|ftp|)\://|[a-zA-Z0-9\-\.]+\.[a-zA-Z](:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*[^\.\,\)\(\s]$";
-            Regex reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            return reg.IsMatch(url);
         }
     }
 }
