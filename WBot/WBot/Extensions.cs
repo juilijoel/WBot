@@ -16,7 +16,11 @@ namespace WBot
 
         public static string FormatUrl(this string url)
         {
-            return url.Replace("https://", "").Replace("http://", "").Replace("www.", "");
+            var result = url.Replace("https://", "").Replace("http://", "").Replace("www.", "");
+            var domain = result.Split('/')[0];
+
+            //make the domain lower case while path remains case sensitive
+            return domain.ToLower() + result.Substring(domain.Length);
         }
     }
 }
