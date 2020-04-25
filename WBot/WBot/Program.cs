@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -16,6 +18,12 @@ namespace WBot
         private static User _botUser;
         private static WBotService _service;
 
+        private static int _shutUpTreshold;
+        private static int _shutUpCounter;
+
+        private static List<string> _shutUpCheckList;
+        private static List<string> _shutUpResponseList;
+
         static void Main(string[] args)
         {
             //Set config file
@@ -27,16 +35,17 @@ namespace WBot
 
             _config = builder.Build();
 
+            _shutUpCounter = 0;
+            _shutUpTreshold = int.Parse(_config["shutUpThreshold"]);
+            _shutUpCheckList = _config.GetSection("shutUpCheckList").GetChildren().Select(fm => fm.Value.ToString()).ToList();
+            _shutUpResponseList = _config.GetSection("shutUpResponseList").GetChildren().Select(fm => fm.Value.ToString()).ToList();
+
             //Init bot client
             _botClient = new TelegramBotClient(_config["accessToken"]);
             _botUser = _botClient.GetMeAsync().Result;
 
             //Init db service
             _service = new WBotService();
-
-            Console.WriteLine(
-              $"Hello, World! I am user {_botUser.Id} and my name is {_botUser.FirstName}."
-            );
 
             _botClient.OnMessage += Bot_OnMessage;
             _botClient.StartReceiving();
@@ -55,8 +64,23 @@ namespace WBot
 
                 //check if message contains an URL
                 var url = GetUrlFromMessage(e.Message);
+
                 if(url == null)
                 {
+                    //check if we want to response to shut up or similar
+                    if(_shutUpCounter > 0 && shutUpCheck(e.Message.Text))
+                    {
+                        //1/4 chance to respond
+                        Random r = new Random();
+                        if(r.Next(3) == 0)
+                        {
+                            await _botClient.SendTextMessageAsync(e.Message.Chat, _shutUpResponseList.PickRandom(), replyToMessageId: e.Message.MessageId);
+                            _shutUpCounter = 0;
+                            return;
+                        }
+
+                        _shutUpCounter -= 1;
+                    }
                     return;
                 }
 
@@ -69,6 +93,7 @@ namespace WBot
                 }
 
                 await _botClient.SendTextMessageAsync(e.Message.Chat, $"W, postattu {count} kertaa", replyToMessageId: e.Message.MessageId);
+                _shutUpCounter = _shutUpTreshold;
             }
             catch(Exception ex)
             {
@@ -95,6 +120,21 @@ namespace WBot
             }
 
             return null;
+        }
+
+        private static bool shutUpCheck(string messageTxt)
+        {
+            var txt = messageTxt.ToLower().Replace(" ", "");
+
+            foreach(var s in _shutUpCheckList)
+            {
+                if (txt.Contains(s))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
